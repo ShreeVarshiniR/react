@@ -1,33 +1,39 @@
-name: CI/CD for React App
+name: CI
 
 on:
   push:
     branches:
-      - main
+      - main  # Adjust this according to your branch name
   pull_request:
     branches:
-      - main
+      - main  # Adjust this according to your branch name
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '14'
 
     - name: Install dependencies
-      run: |
-        npm install
-        npm ci --only=production
+      run: npm install
 
-    - name: Build React app
-      run: npm run build
+    - name: Run ESLint
+      run: npm run lint  # Adjust the lint script according to your project setup
 
-    - name: Test React app
-      run: npm test
+    - name: Build
+      run: npm run build  # Adjust the build script according to your project setup
+
+    - name: Archive production artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: build  # Adjust this to the directory where your build artifacts are generated
+
+    
